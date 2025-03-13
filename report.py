@@ -1,3 +1,5 @@
+import streamlit as st
+
 class Student:
     def __init__(self, name, roll_number, marks):
         self.name = name
@@ -26,40 +28,35 @@ class Student:
             return 'Fail'
 
     def display_report_card(self):
-        print(f"\nReport Card for {self.name} (Roll Number: {self.roll_number})")
+        st.write(f"\n**Report Card for {self.name} (Roll Number: {self.roll_number})**")
         for subject, mark in self.marks.items():
-            print(f"{subject}: {mark}")
-        print(f"Total Marks: {self.total_marks()}")
-        print(f"Percentage: {self.percentage():.2f}%")
-        print(f"Grade: {self.grade()}")
+            st.write(f"{subject}: {mark}")
+        st.write(f"**Total Marks:** {self.total_marks()}")
+        st.write(f"**Percentage:** {self.percentage():.2f}%")
+        st.write(f"**Grade:** {self.grade()}")
 
+st.title("Student Report Card Generator")
 
-def main():
-    students = []
+students = []
 
-    while True:
-        name = input("Enter student name: ")
-        roll_number = input("Enter roll number: ")
-        marks = {
-            'Math': int(input("Enter marks for Math: ")),
-            'Physics': int(input("Enter marks for Physics: ")),
-            'Urdu': int(input("Enter marks for Urdu: ")),
-            'English': int(input("Enter marks for English: ")),
-            'Computer': int(input("Enter marks for Computer: "))
-        }
+name = st.text_input("Enter student name")
+roll_number = st.text_input("Enter roll number")
+marks = {
+    'Math': st.number_input("Enter marks for Math", min_value=0, max_value=100, step=1),
+    'Physics': st.number_input("Enter marks for Physics", min_value=0, max_value=100, step=1),
+    'Urdu': st.number_input("Enter marks for Urdu", min_value=0, max_value=100, step=1),
+    'English': st.number_input("Enter marks for English", min_value=0, max_value=100, step=1),
+    'Computer': st.number_input("Enter marks for Computer", min_value=0, max_value=100, step=1)
+}
 
-        student = Student(name, roll_number, marks)
-        students.append(student)
+if st.button("Insert Record"):
+    student = Student(name, roll_number, marks)
+    students.append(student)
+    st.success(f"Record of {name} inserted successfully.")
 
-        print(f"Record of {name} inserted successfully.")
-        more = input("Do you want to insert more? Press 'Y' for Yes or 'N' for No: ").strip().upper()
-        if more != 'Y':
-            break
-
-    print("\nAll Students Report Cards:")
-    for student in students:
-        student.display_report_card()
-
-
-if __name__ == "__main__":
-    main()
+if st.button("Show All Report Cards"):
+    if students:
+        for student in students:
+            student.display_report_card()
+    else:
+        st.warning("No student records available.")
