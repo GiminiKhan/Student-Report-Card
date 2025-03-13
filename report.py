@@ -1,5 +1,22 @@
 import streamlit as st
 
+# Custom CSS for black background
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: black;
+        color: white;
+    }
+    .stApp {
+        background-color: black;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 class Student:
     def __init__(self, name, roll_number, marks):
         self.name = name
